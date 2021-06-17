@@ -1,0 +1,29 @@
+from telegram import *
+from telegram.ext import *
+import json
+import requests
+api='Enter your API token'
+myBot=Bot(api)
+
+updater=Updater(api)
+dispatcher=updater.dispatcher
+
+
+def btcFunction(update: Update, context: CallbackContext):
+    url='enter the url of coincap api page link here'
+    resp=requests.get(url)
+    r=json.loads(resp.text)
+    myBot.send_message(chat_id= update.effective_chat.id,text=r)
+    print(r["data"]["rateUsd"])
+
+def helloFunction(update: Update, context: CallbackContext):
+    chittiBot.send_message(chat_id=update.effective_chat.id, text="A very good morning coder")
+    menu= " /howru for how are you?\n /eth for getting ethereum rate in dollars \n /btc for getting bitcoin rate in dollars \n /doge for getting dogecoin rate in dollars \n "
+    chittiBot.send_message(chat_id=update.effective_chat.id, text=menu)
+    
+dispatcher.add_handler(CommandHandler("btc",btcFunction))
+dispatcher.add_handler(CommandHandler("hello", helloFunction))
+
+
+updater.start_polling()
+updater.idle()
